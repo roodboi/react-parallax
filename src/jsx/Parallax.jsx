@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { canUseDOM } from 'exenv';
+
 
 export default class Parallax extends React.Component {
 
@@ -8,9 +10,7 @@ export default class Parallax extends React.Component {
 
 		// make dom functionality depend on the installed react version
 		this.ReactDOM = ReactDOM.findDOMNode ? ReactDOM : React;
-
 		this.node = null;
-		this.windowHeight = this.getWindowHeight();
 		this.childStyle = this.getChildStyle();
 		this.timestamp = Date.now();
 		this.autobind();
@@ -43,9 +43,12 @@ export default class Parallax extends React.Component {
 	 * bind some eventlisteners for page load, scroll and resize
 	 */
 	componentWillMount() {
-		document.addEventListener('scroll', this.onScroll, false);
-		window.addEventListener("resize", this.onWindowResize, false);
-		window.addEventListener("load", this.onWindowLoad, false);
+		if(canUseDOM){
+			this.windowHeight = this.getWindowHeight();
+			document.addEventListener('scroll', this.onScroll, false);
+			window.addEventListener("resize", this.onWindowResize, false);
+			window.addEventListener("load", this.onWindowLoad, false);
+		}
 	}
 
 

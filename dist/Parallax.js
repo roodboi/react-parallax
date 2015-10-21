@@ -22,6 +22,8 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _exenv = require('exenv');
+
 var Parallax = (function (_React$Component) {
 	_inherits(Parallax, _React$Component);
 
@@ -32,9 +34,7 @@ var Parallax = (function (_React$Component) {
 
 		// make dom functionality depend on the installed react version
 		this.ReactDOM = _reactDom2['default'].findDOMNode ? _reactDom2['default'] : _react2['default'];
-
 		this.node = null;
-		this.windowHeight = this.getWindowHeight();
 		this.childStyle = this.getChildStyle();
 		this.timestamp = Date.now();
 		this.autobind();
@@ -80,9 +80,12 @@ var Parallax = (function (_React$Component) {
 	}, {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			document.addEventListener('scroll', this.onScroll, false);
-			window.addEventListener("resize", this.onWindowResize, false);
-			window.addEventListener("load", this.onWindowLoad, false);
+			if (_exenv.canUseDOM) {
+				this.windowHeight = this.getWindowHeight();
+				document.addEventListener('scroll', this.onScroll, false);
+				window.addEventListener("resize", this.onWindowResize, false);
+				window.addEventListener("load", this.onWindowLoad, false);
+			}
 		}
 
 		/**
